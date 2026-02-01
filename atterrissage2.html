@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atterrissage</title>
+  <style>
+    :root {
+      --accent: #00bcd4;
+      --bg: #0f1c2e;
+      --text: #f0f0f0;
+      --muted: #a0a0a0;
+      --card-bg: #19283f;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background: #1a1a1a;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .back-home {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    .flight-steps {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      color: white;
+      opacity: 0.6;
+      transition: opacity 0.3s;
+    }
+
+    .step.active {
+      opacity: 1;
+      font-weight: bold;
+    }
+
+    .step i {
+      font-size: 1.5rem;
+      margin-bottom: 0.3rem;
+    }
+
+
+    .section-title {
+      text-align: center;
+      padding: 1rem 0.5rem 0.5em;
+      font-size: 2rem;
+      letter-spacing: 1px;
+      color: #1a1a1a;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-style: italic;
+      margin-bottom: 1.5rem;
+    }
+
+    .balance,
+    .toggle,
+    .quotes-section {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      flex-direction: row;
+      margin: auto;
+      max-width: 90%;
+    }
+
+    .balance {
+      width: 90%;
+    }
+
+    .card {
+      background: #1a1a1a;
+      color: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+      flex: 1 1 350px;
+      text-align: center;
+      transition: transform 0.3s;
+      flex-direction: row;
+      max-width: 750px;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h3 {
+      margin-bottom: 0.7rem;
+    }
+
+    .quote-final {
+      text-align: center;
+      font-size: 1.3rem;
+      font-style: italic;
+      padding: 1.5rem;
+      border-top: 1px solid #555;
+      border-bottom: 1px solid #555;
+      margin: 2.5rem 1.5rem;
+    }
+
+    .call-to-action {
+      text-align: center;
+      font-size: 1.3rem;
+      padding: 0.2rem;
+      margin-top: 0.1rem;
+      background-color: #1a1a1a;
+      color: white;
+    }
+
+    .video-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: black;
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .video-title {
+      position: absolute;
+      color: white;
+      font-size: 2.5rem;
+      font-weight: bold;
+      text-shadow: 1px 1px 10px black;
+      text-align: center;
+      z-index: 5;
+    }
+
+    .main-content {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100vh;
+      background-color: #f4f4f4;
+      color: #1a1a1a;
+    }
+
+    .content-inner {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      flex: 1;
+    }
+
+    .tensions {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 2rem;
+    }
+
+    .tension {
+      background: white;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      flex: 1;
+      margin: 0 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .quote {
+      font-style: italic;
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    footer a {
+      color: #ffd700;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    .fade-in {
+      animation: fadeIn 1s ease-in-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    .nav-buttons {
+      text-align: center;
+      margin: 3rem auto;
+    }
+
+    .nav-buttons a {
+      margin: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background-color: var(--accent);
+      color: var(--bg);
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+
+    .nav-buttons a:hover {
+      background-color: #00acc1;
+    }
+
+    footer {
+      background: #1a1a1a;
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    .burger {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
+    .scenarios {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5rem;
+      justify-content: center;
+      margin: 10px auto;
+    }
+
+    .flip-card {
+      background-color: transparent;
+      width: 260px;
+      height: 180px;
+      perspective: 1000px;
+    }
+
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+
+    .flip-card:hover .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-card-front,
+    .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .flip-card-front {
+      background-color: #e0f7fa;
+      color: #111;
+    }
+
+    .flip-card-back {
+      background-color: #263238;
+      color: white;
+      transform: rotateY(180deg);
+    }
+
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: black;
+      position: relative;
+      margin: auto 8rem;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin: 0;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin: 1rem 0;
+    }
+
+    .tooltip {
+      position: relative;
+      cursor: help;
+      border-bottom: 1px dotted #555;
+    }
+
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 220px;
+      background-color: #f9f9f9;
+      color: #333;
+      text-align: left;
+      border-radius: 5px;
+      padding: 8px 10px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      /* Place au-dessus */
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      font-size: 0.9rem;
+    }
+
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    @media(max-width: 880px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .burger {
+        display: block;
+      }
+
+      .flight-steps {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .flight-steps.show {
+        display: flex;
+      }
+
+      .flight-steps a {
+        padding: 0.5rem 1rem;
+        background: #2a2a2a;
+        border-radius: 8px;
+      }
+
+      .flight-steps {
+        gap: 0.5rem;
+      }
+
+      .nav-buttons {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+
+
+
+
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="video-container" id="videoContainer">
+    <video id="droneVideo" autoplay muted>
+      <source src="land2.mp4" type="video/mp4">
+      Votre navigateur ne supporte pas la lecture vidéo.
+    </video>
+    <div class="video-title">Fin de vol. Mais pas de la question.</div>
+  </div>
+
+  <div class="main-content" id="mainContent">
+    <header>
+      <a class="back-home" href="index.html">&larr; Accueil</a>
+      <button class="burger" onclick="toggleMenu()">☰</button>
+      <nav class="flight-steps">
+        <a class="step" href="decollage.html"><i>🛫</i> Décollage</a>
+        <a class="step" href="reperage.html"><i>🚁</i> Repérages</a>
+        <a class="step" href="survol-tactique.html"><i>🔎</i> Tactique</a>
+        <a class="step" href="podcast.html"><i>🎧</i> Transmission</a>
+        <a class="step active" href="atterrissage2.html"><i>⚖️</i> Atterrissage</a>
+      </nav>
+    </header>
+    <section class="hero">
+      <h2 class="section-title">Fin de vol. Mais pas de la question.</h2>
+      <p class="subtitle">À l’heure où les frontières deviennent intelligentes et les machines prennent de l’altitude,
+        les lignes se brouillent. Entre sécurité et surveillance, liberté et contrôle, humanité et abstraction. Le drone
+        s’éteint, mais les interrogations, elles, continuent de planer.</p>
+    </section>
+
+    <section class="balance">
+      <div class="card">
+        <h3>Sécurité vs Liberté</h3>
+        <p>Plus de surveillance... mais à quel prix ?</p>
+      </div>
+      <div class="card">
+        <h3>Technologie neutre ?</h3>
+        <p>Qui décide de l’usage des drones ? Un outil n’est jamais neutre.</p>
+      </div>
+
+      <section class="balance">
+        <div class="card">
+          <h3>Pushbacks illégaux</h3>
+          <p>Des drones repèrent les embarcations pour coordonner des refoulements vers la Libye, en violation du droit
+            international.</p>
+        </div>
+        <div class="card">
+          <h3>Non-assistance en mer</h3>
+          <p>Repérer ne veut pas toujours dire sauver. Les drones ne remplacent pas les opérations de secours, souvent
+            absentes.</p>
+        </div>
+        <div class="card">
+          <h3>Profilage et discrimination</h3>
+          <p>Les caméras et IA intégrées favorisent le ciblage ethnique et renforcent les logiques de suspicion
+            systématique.</p>
+        </div>
+      </section>
+
+    </section>
+
+    <section class="projection">
+      <h2 class="section-title">🔮 Et demain ?</h2>
+      <div class="scenarios">
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">🛰️ Frontière intelligente</div>
+            <div class="flip-card-back">Des drones autonomes, pilotés par IA, décident en temps réel qui
+              peut passer ou non.</div>
+          </div>
+        </div>
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">🔐 Opacité totale</div>
+            <div class="flip-card-back">La technologie devient propriété exclusive des États. Les
+              journalistes n’ont plus accès aux données.</div>
+          </div>
+        </div>
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">🤝 Surveillance éthique</div>
+            <div class="flip-card-back">Les drones sont surveillés par des commissions mixtes, et utilisés
+              aussi pour sauver.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="quote-final">
+      <blockquote>
+        “Le drone est un dispositif de pouvoir, un instrument de surveillance et de contrôle. Il redéfinit les rapports
+        entre le visible et l’invisible, entre le proche et le lointain.”
+      </blockquote>
+      <p><strong>Grégoire Chamayou</strong> - Théorie du drone</p>
+    </div>
+    <section class="hero">
+      <p>L’usage massif des drones en Italie soulève une inquiétude grandissante : celle d’une frontière qui se
+        militarise, d’un ciel devenu complice d’une surveillance sans visage. Collecter, repérer, repousser — sans
+        regard, sans échange, sans recours. À mesure que la technologie s’affine, l’humain s’efface.</p>
+
+      <p>Des voix s’élèvent, inquiètes d’un basculement. Où se niche l’équilibre entre innovation et compassion, entre
+        contrôle et dignité ? Sous la carlingue froide du drone, ce ne sont pas des silhouettes abstraites, mais des
+        existences en quête de refuge, des vies suspendues à un signal thermique.</p>
+
+      <p>À long terme, ces investissements témoignent d’un choix : celui d’un horizon fermé, où l’effort va à la
+        dissuasion plus qu’à l’accueil, à l’algorithme plus qu’à la main tendue. Le coût n’est pas seulement budgétaire
+        — il est moral, politique, humain.</p>
+
+      <p>La question demeure, vertigineuse. Une frontière bardée de capteurs peut-elle encore être un espace de droit ?
+        Et que devient notre humanité quand elle se confie aux machines pour regarder à sa place ?</p>
+
+      <p>
+        L’usage massif des <span class="tooltip">drones<span class="tooltiptext">Aéronef sans pilote humain à bord, piloté à distance ou de manière autonome.</span>
+        </span> soulève une inquiétude grandissante : celle d’une frontière qui se <span class="tooltip">militarise
+          <span class="tooltiptext">Processus par lequel une zone ou une pratique adopte des caractéristiques
+            militaires.</span>
+        </span>, d’un ciel devenu complice d’une surveillance sans visage.
+      </p>
+
+
+    </section>
+
+
+    <div class="call-to-action">
+      <p>Et vous ? Faut-il une éthique des drones de frontière ?</p>
+    </div>
+
+    <!-- Boutons de navigation -->
+    <div class="nav-buttons">
+      <a href="index.html">Retour à l'accueil</a>
+    </div>
+
+    <footer>
+      <p>Projet étudiant – Cartographie des controverses – 2025</p>
+      <p>Merci à toutes les personnes interrogées, à Frontex, la PAF, etc.</p>
+      <p><strong> Kossi Alain BILOBA,
+          Charles Junior Eithel ESSIMBI EMINI,
+          Lhuisse GUIEMA IBONDZI,
+          Lola LE CLEACH,
+          Lucas PERROT</strong></p>
+    </footer>
+  </div>
+
+  <script>
+    const video = document.getElementById('droneVideo');
+    const videoContainer = document.getElementById('videoContainer');
+    const mainContent = document.getElementById('mainContent');
+
+    video.addEventListener('ended', () => {
+      videoContainer.style.display = 'none';
+      mainContent.style.display = 'flex';
+      mainContent.classList.add('fade-in');
+      //document.body.style.overflow = 'hidden';
+    });
+
+    video.addEventListener('play', function () {
+      video.currentTime = 2; // Commence la vidéo à la 2e seconde
+    });
+
+    // Quand la vidéo atteint la 8e seconde, on la met en pause et on lance l'action
+    video.addEventListener('timeupdate', function () {
+      if (video.currentTime >= 7) {
+        video.pause(); // Met la vidéo en pause
+        videoContainer.style.display = 'none'; // Masque le conteneur vidéo
+        mainContent.style.display = 'flex'; // Affiche le contenu principal
+        mainContent.classList.add('fade-in'); // Ajoute l'animation de fade-in
+        // document.body.style.overflow = 'hidden'; // Vous pouvez décommenter cette ligne si vous souhaitez désactiver le défilement de la page
+      }
+    });
+
+    function toggleMenu() {
+      const menu = document.querySelector('.flight-steps');
+      menu.classList.toggle('show');
+    }
+
+
+  </script>
+
+
+
+</body>
+
+</html>

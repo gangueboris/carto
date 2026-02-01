@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Atterrissage – La Chute et la Projection</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+  <style>
+    :root {
+            --accent: #00bcd4;
+            --bg: #0f1c2e;
+            --text: #f0f0f0;
+            --muted: #a0a0a0;
+            --card-bg: #19283f;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background: #1a1a1a;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .back-home {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .flight-steps {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            color: white;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+
+        .step.active {
+            opacity: 1;
+            font-weight: bold;
+        }
+
+        .step i {
+            font-size: 1.5rem;
+            margin-bottom: 0.3rem;
+        }
+
+
+        .section-title {
+            text-align: center;
+            padding: 3rem 1rem 1rem;
+            font-size: 2rem;
+            letter-spacing: 1px;
+            color: #1a1a1a;
+        }
+    .subtitle {
+      text-align: center;
+      font-style: italic;
+      margin-bottom: 3rem;
+    }
+    .balance, .toggle, .quotes-section {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin: 3rem auto;
+      max-width: 900px;
+    }
+    .card {
+      background: #1a1a1a;
+      color:white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+      flex: 1 1 250px;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .card h3 {
+      margin-bottom: 1rem;
+    }
+    .quote-final {
+      text-align: center;
+      font-size: 1.3rem;
+      font-style: italic;
+      padding: 3rem;
+      border-top: 1px solid #555;
+      border-bottom: 1px solid #555;
+      margin: 4rem 2rem;
+    }
+    .call-to-action {
+      text-align: center;
+      font-size: 1.3rem;
+      padding: 2rem;
+      margin-top: 3rem;
+      background-color: #1a1a1a;
+      color:white;
+    }
+    .call-to-action input {
+      padding: 0.5rem;
+      margin-top: 1rem;
+      width: 80%;
+      max-width: 400px;
+      border: none;
+      border-radius: 5px;
+    }
+    .nav-buttons {
+            text-align: center;
+            margin: 3rem auto;
+        }
+
+        .nav-buttons a {
+            margin: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--accent);
+            color: var(--bg);
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .nav-buttons a:hover {
+            background-color: #00acc1;
+        }
+
+        footer {
+            background: #1a1a1a;
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+  </style>
+</head>
+<body>
+    <header>
+        <a class="back-home" href="index.html">&larr; Accueil</a>
+        <nav class="flight-steps">
+            <a class="step" href="decollage.html"><i>🛫</i> Décollage</a>
+            <a class="step" href="reperage.html"><i>🚁</i> Repérages</a>
+            <a class="step" href="survol-tactique.html"><i>🔎</i> Tactique</a>
+            <a class="step" href="podcast.html"><i>🎧</i> Podcast</a>
+            <a class="step active" href="atterrissage.html"><i>⚖️</i> Dérive</a>
+        </nav>
+    </header>
+
+  <section class="hero">
+    <h2 class="section-title">Fin de vol. Mais pas de la question.</h2>
+    <p class="subtitle">À l’heure où les frontières deviennent intelligentes, les lignes se brouillent entre sécurité, liberté et humanité.</p>
+  </section>
+
+  <section class="balance">
+    <div class="card">
+      <h3>Sécurité vs Liberté</h3>
+      <p>Plus de surveillance... mais à quel prix ?</p>
+    </div>
+    <div class="card">
+      <h3>Technologie neutre ?</h3>
+      <p>Qui décide de l’usage des drones ? Un outil n’est jamais neutre.</p>
+    </div>
+    
+  </section>
+
+  <section class="projection">
+    <h2 class="section-title">🔮 Et demain ?</h2>
+    <div class="toggle">
+      <div class="card">
+        <h3>Drones autonomes</h3>
+        <p>Patrouilles sans pilote, décisions sans humain… une fiction ?</p>
+      </div>
+      <div class="card">
+        <h3>Frontières prédictives</h3>
+        <p>Des algorithmes qui anticipent les déplacements humains.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="quote-final">
+    “Le drone n’a pas d’émotion. Mais ceux qui l’envoient en ont. Et ceux qu’il survole, encore plus.”
+  </div>
+
+  <div class="call-to-action">
+    <p>Et vous ? Faut-il une éthique des drones de frontière ?</p>
+  </div>
+
+  <!-- Boutons de navigation -->
+  <div class="nav-buttons">
+    <a href="podcast.html">← Podcast</a>
+    <a href="podcast.html">Terminer la mission</a>
+</div>
+
+<footer>
+    <p>Projet étudiant – Cartographie des controverses – 2025</p>
+    <p>Merci à toutes les personnes interrogées, à Frontex, la PAF, etc.</p>
+    <p><strong> Kossi Alain BILOBA,
+            Charles Junior Eithel ESSIMBI EMINI,
+            Lhuisse GUIEMA IBONDZI,
+            Lola LE CLEACH,
+            Lucas PERROT</strong></p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repérage - Acteurs</title>
+    <!-- AOS CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tagesschrift&display=swap');
+
+        :root {
+            --accent: #5B9A8B;
+            --bg: #0f1c2e;
+            --text: #f0f0f0;
+            --muted: #a0a0a0;
+            --card-bg: #19283f;
+        }
+
+        .tagesschrift-regular {
+            font-family: "Tagesschrift", system-ui;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .justify {
+            text-align: justify;
+            text-justify: inter-word;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #faf3c8;
+            padding-top: 80px;
+        }
+
+        
+        .legend-text {
+            font-size: 3vw;
+            max-width: 50%;
+
+        }
+
+        header {
+            background: #252B48;
+            color: white;
+            padding: 1rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        header a {
+            padding-left: 1rem;
+        }
+
+        .back-home {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .section-title {
+            padding: 0.2rem 1rem 2rem;
+            font-size: 4vw;
+            letter-spacing: 1px;
+        }
+
+        .main-title {
+            text-align: center;
+            padding: 0.2rem 0rem 2rem;
+            margin: auto;
+            font-size: 4vw;
+            letter-spacing: 1px;
+            width: 100%;
+            background-color: #252B48;
+            color: #F7E987
+        }
+
+        .flight-steps {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            padding-right: 2rem;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            color: white;
+            transition: opacity 0.3s;
+        }
+
+        .step.active {
+            opacity: 1;
+            font-weight: bold;
+            color: #F7E987;
+        }
+
+        .step i {
+            font-size: 1.5rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .section-title {
+            padding: 3rem 1rem 2rem;
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .section-title p {
+            max-width: 1200px;
+            margin: 0 auto;
+            color: #333;
+            font-size: 1.2rem;
+        }
+
+        .map-section {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .map-container {
+            position: relative;
+            width: 60%;
+        }
+
+        .map-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .map-legend {
+            width: 50%;
+            height: 1rem;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin: 2rem auto;
+        }
+
+        .legend-point {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid white;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+        }
+
+
+        .map-point {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid white;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .red {
+            background-color: red;
+        }
+
+        .yellow {
+            background-color: yellow;
+        }
+
+        .blue {
+            background-color: blue;
+        }
+
+        .green {
+            background-color: green;
+        }
+
+        .map-point:hover {
+            transform: scale(1.3);
+        }
+
+        /* Positionnement des points (en pourcentages) */
+
+
+        .frontex {
+            top: 57%;
+            left: 55%;
+        }
+
+        .paf {
+            top: 78%;
+            left: 39%;
+        }
+
+        .migrants {
+            top: 95%;
+            left: 55%;
+        }
+
+        .ONG {
+            top: 75%;
+            left: 34.5%;
+        }
+
+
+        .thales {
+            top: 67%;
+            left: 34.5%;
+        }
+
+        /* Info sur l'acteur cliqué */
+        .actor-info {
+            display: none;
+            background-color: #252B48;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0, 188, 212, 0.2);
+            width: 40%;
+            flex-shrink: 0;
+        }
+
+        .actor-info h3 {
+            color: var(--accent);
+            margin-top: 0;
+        }
+
+        .actor-info p {
+            margin: 0.5rem 0;
+            color: #f0f0f0;
+        }
+
+        blockquote {
+            color: #a0a0a0;
+            font-style: italic;
+            margin-top: 1rem;
+        }
+
+        .nav-buttons {
+            text-align: center;
+            margin: 3rem auto;
+        }
+
+        .nav-buttons a {
+            margin: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--accent);
+            color: var(--bg);
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .nav-buttons a:hover {
+            background-color: #00acc1;
+        }
+
+        body>footer {
+            background: #252B48;
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+
+        figure {
+            margin: 0 !important;
+        }
+
+        figcaption {
+            color: white;
+            font-size: small;
+        }
+
+        .tooltip {
+            position: relative;
+            cursor: help;
+            border-bottom: 1px dashed #fefefe;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 220px;
+            background-color: #f9f9f9;
+            color: #333;
+            text-align: left;
+            border-radius: 5px;
+            padding: 8px 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            /* Place au-dessus */
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            font-size: 0.9rem;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .burger {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        @media (min-width: 1300px) {
+
+.main-title,
+.section-title {
+    font-size: 2.5rem;
+}
+}
+
+        @media (max-width: 880px) {
+            .map-section {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .map-container,
+            .actor-info {
+                width: 90%;
+            }
+
+            .map-image {
+                width: 100%;
+            }
+
+            .flight-steps {
+                gap: 0.5rem;
+            }
+
+            .back-home {
+                margin-right: 1rem;
+            }
+
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .burger {
+                display: block;
+            }
+
+            .flight-steps {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                gap: 1rem;
+                margin-top: 1rem;
+            }
+
+            .flight-steps.show {
+                display: flex;
+            }
+
+            .flight-steps a {
+                padding: 0.5rem 1rem;
+                background: #2a2a2a;
+                border-radius: 8px;
+            }
+
+            .flight-steps {
+                gap: 0.5rem;
+            }
+
+            .nav-buttons {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <a class="back-home" href="index.html">&larr; Accueil</a>
+        <button class="burger" onclick="toggleMenu()">☰</button>
+        <nav class="flight-steps">
+            <a class="step" href="decollage.html"><i>🛫</i> Décollage</a>
+            <a class="step active" href="reperage.html"><i>🚁</i> Repérages</a>
+            <a class="step" href="survol-tactique.html"><i>🔎</i> Tactique</a>
+            <a class="step" href="podcast.html"><i>🎧</i> Transmission</a>
+            <a class="step" href="atterrissage.html"><i>⚖️</i> Atterrissage</a>
+        </nav>
+    </header>
+
+    <h1 class="main-title">ACTEURS SUR LA CARTE</h1>
+
+
+    <div class="section-title justify">
+        <p>Sur notre trajectoire, plusieurs acteurs apparaissent. Publics ou privés, nationaux ou transnationaux, ils
+            jouent chacun un rôle dans la gestion, la surveillance ou la contestation des frontières.</p>
+    </div>
+    <!--<div class="map-legend">
+        <div class="legend-point legend1 red" ></div> <p class="legend-text">Acteurs Gouvernementaux</p>  
+        <div class="legend-point legend2 blue" > </div>  <p class="legend-text"> Acteurs Humanitaires</p>
+        <div class="legend-point legend3 green" ></div> <p class="legend-text">Acteurs Technologiques et Industriels</p>
+    </div>-->
+
+
+    <!-- Carte interactive et informations -->
+    <section class="map-section">
+        <div class="map-container">
+            <img src="eur.png" alt="Carte de l'Europe" class="map-image" />
+
+            <!-- Points rouges sur la carte -->
+            <div class="map-point frontex red" onclick="showActorInfo('frontex')"></div>
+            <div class="map-point paf red" onclick="showActorInfo('paf')"></div>
+            <div class="map-point migrants yellow" onclick="showActorInfo('migrants')"></div>
+            <div class="map-point thales green" onclick="showActorInfo('thales')"></div>
+            <div class="map-point ONG blue" onclick="showActorInfo('ONG')"></div>
+
+        </div>
+
+        <!-- Informations sur les acteurs -->
+        <div class="actor-info" id="default-info">
+            <h3>Cliquez sur les points rouges pour découvrir les différents acteurs</h3>
+        </div>
+        <div class="actor-info" id="frontex-info">
+            <h3>Frontex</h3>
+            <p>🔴 Surveillant</p>
+            <br>
+            <p><strong>Localisation :</strong> Varsovie, Pologne</p>
+            <p><strong>Statut :</strong> Agence européenne</p>
+            <p><strong>Rôle :</strong> Coordination de la surveillance aux frontières extérieures de l'UE</p>
+            <p><strong>Technologies :</strong>
+                <span class="tooltip">Drone Heron<span class="tooltiptext">Drones israéliens utilisés pour la
+                        surveillance et la collecte de renseignements. Frontex, l'agence européenne de garde-frontières,
+                        a signé un contrat avec Airbus pour le déploiement et la maintenance de ces drones afin de
+                        renforcer la surveillance des frontières extérieures de l'UE. ​</span></span>
+                , capteurs thermiques, systèmes d'analyse d'image
+            </p>
+            <p><strong>Contexte :</strong> Acteur central dans le déploiement technologique à grande échelle. L’agence
+                fournit drones, financement, et expertise logistique à l’Italie dans le cadre du programme Eurosur. Elle
+                est critiquée pour les pushbacks illégaux et un manque de transparence.</p>
+            <figure class="img-frontex">
+                <h3 class="img-title">Budget annuel de Frontex</h3>
+                <img src="budget.png" alt="Infographie des opérations de drones"
+                    style="width:100%; max-width:100%; display:block; margin:20px auto 20px auto;">
+                <figcaption>Source : Commission des lois, à partir du rapport spécial de la Cour des comptes européenne
+                    du 7 juin 2021 et des données publiées par Frontex </figcaption>
+            </figure>
+            <br>
+            <p>
+                Le budget de Frontex a connu une croissance significative, montant jusqu'à <strong>922 millions d'euros
+                    en 2024</strong> . Cette augmentation reflète les besoins croissants en matière de gestion des
+                frontières extérieures de l'Union européenne.
+            </p>
+        </div>
+
+        <div class="actor-info" id="paf-info">
+            <h3>Police aux Frontières</h3>
+            <p>🔴 Surveillant</p>
+            <br>
+            <p><strong>Localisation :</strong> Alpes-Maritimes, France</p>
+            <p><strong>Statut :</strong> Forces de l'ordre</p>
+            <p><strong>Rôle :</strong> Contrôle et gestion quotidienne des points de passage</p>
+            <p><strong>Technologies :</strong> Caméras, drones tactiques, interpellations</p>
+            <p><strong>Contexte :</strong> Bras opérationnel de la surveillance, notamment dans les Alpes. Les drones y
+                sont perçus comme un outil de patrouille efficace mais controversé, surtout en zone montagneuse.</p>
+            <blockquote>"Les drones nous permettent de voir sans être vus."</blockquote>
+        </div>
+
+        <div class="actor-info" id="migrants-info">
+            <h3>Migrants</h3>
+            <p>🟡 Surveillés</p>
+            <br>
+            <p><strong>Localisation :</strong> Méditerranée</p>
+            <p><strong>Statut :</strong> Acteurs en mouvement</p>
+            <p><strong>Rôle :</strong> Traversées pour fuir la guerre, la pauvreté ou le climat</p>
+            <p><strong>Technologies :</strong> Applications GPS, routes partagées, évitement surveillance</p>
+            <p><strong>Contexte :</strong> Cibles directes de la surveillance. Les drones entravent souvent l’accès aux
+                procédures d’asile, renforcent les discriminations, et aggravent les conditions psychologiques des
+                personnes en déplacement.</p>
+            <blockquote>"Nous ne savons jamais si nous allons y arriver."</blockquote>
+        </div>
+
+        <div class="actor-info" id="thales-info">
+            <h3>Thalès</h3>
+            <p>🟢 Concepteur</p>
+            <br>
+            <p><strong>Localisation :</strong> Paris, France</p>
+            <p><strong>Statut :</strong> Entreprise privée</p>
+            <p><strong>Rôle :</strong> Fourniture de technologies de surveillance</p>
+            <p><strong>Technologies :</strong> Radar, IA de reconnaissance, capteurs optiques</p>
+            <p><strong>Contexte :</strong> Exemple d’entreprise impliquée dans la fourniture de technologies de
+                surveillance. Son rôle soulève des questions sur la privatisation de la sécurité aux frontières.</p>
+            <blockquote>"Nous innovons pour la sécurité de tous."</blockquote>
+        </div>
+        <div class="actor-info" id="ONG-info">
+            <h3>ONG</h3>
+            <p>🔵 Défenseur des droits</p>
+            <br>
+            <p><strong>Localisation :</strong> France</p>
+            <p><strong>Organismes :</strong> Amnesty international, ANAFE</p>
+            <p><strong>Rôle :</strong> Secours et protection des droits des migrants</p>
+            <p><strong>Moyens :</strong> Documentation des abus, Pression politique, Mobilisation communautaire</p>
+            <p><strong>Contexte :</strong>Pricipaux dénonciateurs des abus et atteintes aux Droits de l'homme. Elles
+                appellent à une utilisation éthique des drones, plaident pour des alternatives respectueuses des droits
+                des migrants et mobilisent l’opinion publique pour renforcer la solidarité envers ceux en détresse.</p>
+            <blockquote>"La surveillance ne doit pas violer les droits des personnes en mouvement."</blockquote>
+        </div>
+
+    </section>
+
+    <!-- Boutons de navigation -->
+    <div class="nav-buttons">
+        <a href="decollage.html">← Décollage</a>
+        <a href="survol-tactique.html">Voir les opérations de terrain</a>
+    </div>
+
+    <footer>
+        <p>Projet étudiant – Cartographie des controverses – 2025</p>
+        <p>Merci à toutes les personnes interrogées, à Frontex, la PAF, etc.</p>
+        <p><strong> Kossi Alain BILOBA,
+                Charles Junior Eithel ESSIMBI EMINI,
+                Lhuisse GUIEMA IBONDZI,
+                Lola LE CLEACH,
+                Lucas PERROT</strong></p>
+    </footer>
+
+    <script>
+        // Fonction pour afficher les informations de l'acteur cliqué
+        function showActorInfo(actor) {
+            // Masquer toutes les fiches
+            var actorInfos = document.querySelectorAll('.actor-info');
+            actorInfos.forEach(function (info) {
+                info.style.display = 'none';
+            });
+
+            // Afficher la fiche correspondante
+            var actorInfo = document.getElementById(actor + '-info');
+            actorInfo.style.display = 'block';
+        }
+        showActorInfo("default")
+
+        function toggleMenu() {
+            const menu = document.querySelector('.flight-steps');
+            menu.classList.toggle('show');
+        }
+    </script>
+</body>
+
+</html>

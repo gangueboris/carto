@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Survol Tactique – Missions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #00bcd4;
+            --bg: #0f1c2e;
+            --text: #f0f0f0;
+            --muted: #a0a0a0;
+            --card-bg: #19283f;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background: #1a1a1a;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .back-home {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .flight-steps {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            color: white;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+
+        .step.active {
+            opacity: 1;
+            font-weight: bold;
+        }
+
+        .step i {
+            font-size: 1.5rem;
+            margin-bottom: 0.3rem;
+        }
+
+
+        .section-title {
+            text-align: center;
+            padding: 3rem 1rem 1rem;
+            font-size: 2rem;
+            letter-spacing: 1px;
+            color: #1a1a1a;
+        }
+
+        .mission-selector {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 2rem 1rem;
+        }
+
+        .mission-btn {
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .mission-btn:hover,
+        .mission-btn.active {
+            background: #333;
+        }
+
+        .mission-content {
+            max-width: 900px;
+            margin: 2rem auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .mission-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        blockquote {
+            font-style: italic;
+            color: #555;
+            margin-top: 1.5rem;
+            border-left: 4px solid #1a1a1a;
+            padding-left: 1rem;
+        }
+
+        .nav-buttons {
+            text-align: center;
+            margin: 3rem auto;
+        }
+
+        .nav-buttons a {
+            margin: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--accent);
+            color: var(--bg);
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .nav-buttons a:hover {
+            background-color: #00acc1;
+        }
+
+        footer {
+            background: #1a1a1a;
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+
+        .burger {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        @media(max-width: 880px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .burger {
+                display: block;
+            }
+
+            .flight-steps {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                gap: 1rem;
+                margin-top: 1rem;
+            }
+
+            .flight-steps.show {
+                display: flex;
+            }
+
+            .flight-steps a {
+                padding: 0.5rem 1rem;
+                background: #2a2a2a;
+                border-radius: 8px;
+            }
+
+            .flight-steps {
+                gap: 0.5rem;
+            }
+            .nav-buttons{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <a class="back-home" href="index.html">&larr; Accueil</a>
+        <button class="burger" onclick="toggleMenu()">☰</button>
+        <nav class="flight-steps">
+            <a class="step" href="decollage.html"><i>🛫</i> Décollage</a>
+            <a class="step" href="reperage.html"><i>🚁</i> Repérages</a>
+            <a class="step active" href="survol-tactique.html"><i>🔎</i> Tactique</a>
+            <a class="step" href="podcast.html"><i>🎧</i> Transmission</a>
+            <a class="step" href="atterrissage2.html"><i>⚖️</i> Atterrissage</a>
+        </nav>
+    </header>
+
+    <h1 class="section-title">🎯 Sélection de mission</h1>
+
+    <div class="mission-selector">
+        <button class="mission-btn active" data-mission="alpes">🗻 Alpes</button>
+        <button class="mission-btn" data-mission="med">🌊 Méditerranée</button>
+        <button class="mission-btn" data-mission="ville">🏙️ Zone urbaine</button>
+        <button class="mission-btn" data-mission="frontex">🛰️ Europe Centrale</button>
+    </div>
+
+    <div id="alpes" class="mission-content active">
+        <h3>🗻 Mission : Survol des cols frontières</h3>
+        <p><strong>Type :</strong> Surveillance</p>
+        <p><strong>Description :</strong> Les drones de la PAF sillonnent les cols alpins à la recherche de passages
+            clandestins, notamment la nuit.</p>
+        <p><strong>Enjeux :</strong> Surveillance des passages clandestins par drones, surtout de nuit. Efficace pour repérer mais limité dans l’intervention. Forte symbolique sécuritaire dans les territoires frontaliers sensibles.</p>
+        <blockquote>“Le drone, c’est comme une patrouille silencieuse. Mais il ne remplacera jamais l’œil du flic dans
+            le col.” – Responsable PAF</blockquote>
+    </div>
+
+    <div id="med" class="mission-content">
+        <h3>🌊 Mission : Repérage embarcations</h3>
+        <p><strong>Type :</strong> Sauvetage & contrôle</p>
+        <p><strong>Description :</strong> Les drones maritimes détectent les embarcations en détresse, déclenchant
+            parfois des sauvetages, parfois des interceptions.</p>
+        <p><strong>Enjeux :</strong> Repérage d’embarcations via drones maritimes. La détection ne garantit pas toujours un secours. Cela soulève des critiques sur la non-assistance en mer et le non-respect du droit maritime international.</p>
+        <blockquote>“On n’arrive plus à séparer l’aide humanitaire de la surveillance.” – ONG Méditerranée</blockquote>
+    </div>
+
+    <div id="ville" class="mission-content">
+        <h3>🏙️ Mission : Tests IA reconnaissance faciale</h3>
+        <p><strong>Type :</strong> Technologique</p>
+        <p><strong>Description :</strong> Des essais menés dans des villes européennes sur l’usage de l’IA pour
+            reconnaître les individus dans l’espace public.</p>
+        <p><strong>Enjeux :</strong> Tests de reconnaissance faciale. Sujet à controverse pour ses implications en matière de vie privée et de discrimination algorithmique. Des ONG dénoncent ces expérimentations comme intrusives.</p>
+        <blockquote>“Ces tests interrogent les libertés publiques.” – Rapport CNIL 2024</blockquote>
+    </div>
+
+    <div id="frontex" class="mission-content">
+        <h3>🛰️ Mission : Suivi des mouvements en Europe Centrale</h3>
+        <p><strong>Type :</strong> Dispositif Frontex</p>
+        <p><strong>Description :</strong> Cartographie des flux migratoires avec caméras thermiques, outils prédictifs
+            et veille permanente.</p>
+        <p><strong>Enjeux :</strong> Surveillance prédictive via drones thermiques et IA en Europe centrale. Frontex centralise les données migratoires mais est accusée de pratiques opaques et de refoulements illégaux.</p>
+        <blockquote>“Nous analysons les données en temps réel pour adapter nos réponses.” – Communiqué Frontex
+        </blockquote>
+    </div>
+
+    <!-- Boutons de navigation -->
+    <div class="nav-buttons">
+        <a href="reperage.html">← Repérages</a>
+        <a href="podcast.html">Voir le Podcast</a>
+    </div>
+
+    <footer>
+        <p>Projet étudiant – Cartographie des controverses – 2025</p>
+        <p>Merci à toutes les personnes interrogées, à Frontex, la PAF, etc.</p>
+        <p><strong> Kossi Alain BILOBA,
+                Charles Junior Eithel ESSIMBI EMINI,
+                Lhuisse GUIEMA IBONDZI,
+                Lola LE CLEACH,
+                Lucas PERROT</strong></p>
+    </footer>
+
+    <script>
+        const buttons = document.querySelectorAll('.mission-btn');
+        const contents = document.querySelectorAll('.mission-content');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                // retirer les classes actives
+                buttons.forEach(btn => btn.classList.remove('active'));
+                contents.forEach(content => content.classList.remove('active'));
+
+                // activer la sélection
+                button.classList.add('active');
+                const missionId = button.getAttribute('data-mission');
+                document.getElementById(missionId).classList.add('active');
+            });
+        });
+
+        function toggleMenu() {
+            const menu = document.querySelector('.flight-steps');
+            menu.classList.toggle('show');
+        }
+    </script>
+</body>
+
+</html>

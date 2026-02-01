@@ -1,0 +1,51 @@
+/* Base style */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.intro {
+    background: url('drone-header.jpg') no-repeat center center/cover;
+    color: white;
+    text-align: center;
+    padding: 100px 20px;
+}
+
+.overlay h1 {
+    font-size: 2.5rem;
+}
+
+.overlay p {
+    font-size: 1.2rem;
+}
+
+.role-drones img {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.avantages-defis {
+    display: flex;
+    justify-content: space-between;
+    padding: 50px 10%;
+}
+
+.column {
+    width: 45%;
+}
+
+.temoignages {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.cta-btn {
+    background: #FF4500;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+}

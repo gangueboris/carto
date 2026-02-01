@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Décollage - Cartographie des Controverses</title>
+    <!-- AOS CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tagesschrift&display=swap');
+
+        :root {
+            --accent: #5B9A8B;
+            --bg: #0f1c2e;
+            --text: #f0f0f0;
+            --muted: #a0a0a0;
+            --card-bg: #19283f;
+        }
+
+        .tagesschrift-regular {
+            font-family: "Tagesschrift", system-ui;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #faf3c8;
+            padding-top: 80px;
+        }
+
+        header {
+            background: #252B48;
+            color: white;
+            padding: 1rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        header a {
+            padding-left: 1rem;
+        }
+
+        .back-home {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            padding: 0.2rem 1rem 2rem;
+            font-size: 4vw;
+            letter-spacing: 1px;
+        }
+
+        .main-title {
+            text-align: center;
+            padding: 0.2rem 0rem 2rem;
+            margin: auto;
+            font-size: 4vw;
+            letter-spacing: 1px;
+            width: 100%;
+            background-color: #252B48;
+            color: #F7E987
+        }
+
+        .flight-steps {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            padding-right: 2rem;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            color: white;
+            transition: opacity 0.3s;
+        }
+
+        .step.active {
+            opacity: 1;
+            font-weight: bold;
+            color: #F7E987;
+        }
+
+        .step i {
+            font-size: 1.5rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .timeline-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            overflow: hidden;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .timeline-slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .timeline-item {
+            min-width: 100%;
+            flex-shrink: 0;
+            text-align: center;
+        }
+
+        .hero {
+            height: 100vh;
+            background: url('drone-ciel.jpg') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: black;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin: 0;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin: 1rem 0;
+        }
+
+        .hero button {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            background: white;
+            color: #1a1a1a;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+        }
+
+        .hero button:hover {
+            background: #ddd;
+        }
+
+        .quote-floating {
+            position: absolute;
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        section {
+            padding: 2rem 2rem;
+            max-width: 80%;
+            margin: auto;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 2rem;
+            padding: 1.5rem;
+            background-color: #252B48;
+            border-radius: 10px;
+        }
+
+        .stat-block {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            flex: 1 1 200px;
+        }
+
+        .stat-block h3 {
+            font-size: 2.2rem;
+        }
+
+        .actor-preview {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .actor-preview img {
+            width: 180px;
+            object-fit: contain;
+        }
+
+        /* SECTION */
+        .timeline-wrapper {
+            max-width: 1000px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background-color: #252B48;
+            border-radius: 1rem;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* BARRE DE TEMPS */
+        .timeline-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            margin-bottom: 2rem;
+            overflow-x: auto;
+            height: 4rem;
+            padding: 0 1rem;
+        }
+
+        /* LIGNE */
+        .timeline-bar::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background-color: #5B9A8B;
+            z-index: 1;
+        }
+
+        /* DOTS */
+        .timeline-dot {
+            position: relative;
+            background-color: #F7E987;
+            color: #252B48;
+            border: none;
+            border-radius: 50%;
+            padding: 1rem;
+            z-index: 2;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            font-weight: bold;
+        }
+
+        .timeline-dot:hover,
+        .timeline-dot.active {
+            background-color: #5B9A8B;
+            color: #fff;
+            transform: scale(1.1);
+        }
+
+        /* CONTENU */
+        .timeline-content {
+            background-color: #445069;
+            padding: 2rem;
+            border-radius: 0.8rem;
+            color: #F7E987;
+            min-height: 150px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+            transition: opacity 0.4s ease;
+            font-size: 1rem;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* Effet smooth d'apparition */
+        .timeline-content.fade-out {
+            opacity: 0;
+        }
+
+        .timeline-content.fade-in {
+            opacity: 1;
+        }
+
+
+        .faq-question {
+            background-color: #eee;
+            color: #444;
+            cursor: pointer;
+            padding: 1rem;
+            width: 100%;
+            border: none;
+            text-align: left;
+            font-size: 1rem;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .faq-question:hover,
+        .faq-question.active {
+            background-color: #ddd;
+        }
+
+        .faq-answer {
+            display: none;
+            padding: 0 1rem 1rem;
+            background-color: white;
+            border-left: 4px solid #00bcd4;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .arrow {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-question.active .arrow {
+            transform: rotate(180deg);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        blockquote {
+            font-style: italic;
+            /* Texte en italique */
+            border-right: 5px solid #252B48;
+            /* Bordure gauche pour un effet de citation */
+            padding-right: 20px;
+            /* Espacement à gauche du texte */
+            margin: 20px 0;
+            /* Espacement autour de la citation */
+            color: #333;
+            /* Couleur du texte */
+            background-color: #f9f9f9;
+            /* Couleur de fond légère */
+            font-size: 1.2em;
+            /* Taille de police légèrement plus grande */
+            line-height: 1.6;
+            /* Espacement entre les lignes pour aérer le texte */
+        }
+
+        blockquote footer {
+            font-size: 1em;
+            margin-top: 10px;
+            color: #252B48;
+            /* Couleur plus claire pour l'auteur */
+            font-style: normal;
+            /* Rétablit le style normal pour l'auteur */
+        }
+
+
+        .nav-buttons {
+            text-align: center;
+            margin: 3rem auto;
+        }
+
+        .nav-buttons a {
+            margin: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--accent);
+            color: var(--bg);
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .nav-buttons a:hover {
+            background-color: #00acc1;
+        }
+
+        body>footer {
+            background: #252B48;
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+
+        .reduce {
+            font-size: 1.7rem;
+        }
+
+        .time-img {
+            width: 100%;
+            max-width: 300px;
+            margin: 20px auto;
+            display: block;
+        }
+
+        .img-title {
+            font-size: 1.5rem;
+            text-align: center;
+            margin: 20px auto;
+        }
+
+        figcaption {
+            width: 60%;
+            font: italic smaller sans-serif;
+            padding: 3px;
+            text-align: center;
+            margin: auto;
+        }
+
+        p.intro {
+            text-align: justify;
+            text-justify: inter-word;
+        }
+
+        .justify {
+            text-align: justify;
+            text-justify: inter-word;
+        }
+
+        .burger {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        /* FAQ container */
+        .faq-container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #445069;
+            border-radius: 1rem;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+        }
+
+        /* Question buttons */
+        .faq-question {
+            background-color: #5B9A8B;
+            color: #252B48;
+            padding: 1rem 1.5rem;
+            width: 100%;
+            border: none;
+            text-align: left;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 0.5rem;
+            margin: 0.5rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-question:hover {
+            background-color: #6fc4b2;
+            color: #252B48;
+        }
+
+        .arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-question.open .arrow {
+            transform: rotate(180deg);
+        }
+
+        /* Answer panel */
+        .faq-answer {
+            background-color: #ffffff11;
+            color: #F7E987;
+            padding: 0.8rem 1.5rem;
+            border-left: 4px solid #F7E987;
+            border-radius: 0 0.5rem 0.5rem 0.5rem;
+            margin-bottom: 0.5rem;
+            display: none;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Tooltip (si tu l’utilises ici aussi) */
+        .tooltip {
+            background-color: #F7E987;
+            color: #252B48;
+            position: relative;
+            cursor: pointer;
+            /* ton bleu moyen */
+            font-weight: 600;
+            border-radius: 5px;
+            /* ton vert/gris foncé */
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .tooltip:hover {
+            background-color: #fff;
+            box-shadow: 0 0 6px #F7E987;
+            text-shadow: none;
+        }
+
+        .tooltip::after {
+            content: ' ⓘ';
+            font-size: 0.75em;
+            color: #5B9A8B;
+            margin-left: 4px;
+        }
+
+
+
+        .tooltiptext {
+            visibility: hidden;
+            width: 220px;
+            background-color: #333;
+            color: #F7E987;
+            text-align: center;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            position: absolute;
+            z-index: 10;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+
+        .horizontal {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            align-items: center;
+            justify-content: space-between;
+
+        }
+
+        .amnesty-quote {
+            text-align: right;
+            border-radius: 15px;
+        }
+
+        /**/
+
+
+        .actors-section {
+            text-align: center;
+            padding: 4rem 1rem;
+            position: relative;
+        }
+
+        .actor-orbit {
+            position: relative;
+            width: 80%;
+            margin: 0 auto;
+            padding: 3rem 1rem;
+
+        }
+
+        .central-text {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.05);
+            position: relative;
+            z-index: 2;
+            box-sizing: border-box;
+            width: 100%;
+            border: solid #252B48 10px;
+        }
+
+        .floating-img {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            z-index: 1;
+            animation: float 5s ease-in-out infinite;
+        }
+
+        .floating-img img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: scale-down;
+            object-position: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            background-color: white;
+        }
+
+
+        /* Positionnement autour du centre */
+        .img1 {
+            top: -20px;
+            left: -20%;
+        }
+
+        .img2 {
+            top: 20px;
+            right: -17%;
+        }
+
+        .img3 {
+            top: 370px;
+            left: 0%;
+        }
+
+        .img4 {
+            top: 410px;
+            right: 10%;
+        }
+
+        .conseilpng {
+            background-color: white;
+        }
+
+        /* Animation flottante */
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Responsive */
+
+        @media (min-width: 1300px) {
+
+            .main-title,
+            .section-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 880px) {
+            body {
+                padding-top: 90px;
+            }
+
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .burger {
+                display: block;
+            }
+
+            .flight-steps {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                gap: 1rem;
+                margin-top: 1rem;
+            }
+
+            .flight-steps.show {
+                display: flex;
+            }
+
+            .flight-steps a {
+                padding: 0.5rem 1rem;
+                background: #2a2a2a;
+                border-radius: 8px;
+            }
+
+            .flight-steps {
+                gap: 0.5rem;
+            }
+
+            .back-home {
+                margin-right: 1rem;
+            }
+
+            .nav-buttons {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .actor-preview {
+                display: flex;
+                flex-direction: column;
+                margin: auto;
+                align-items: center;
+                gap: 1vh;
+            }
+
+            .actor-section {
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding: 2rem 1rem;
+                min-height: auto;
+            }
+
+            .actor-orbit {
+                width: 100%;
+            }
+
+            .imgs {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+
+            }
+
+            .actor-preview {
+                position: static;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+                margin-bottom: 1.5rem;
+                width: 100%;
+                pointer-events: auto;
+            }
+
+            .floating-img {
+                position: static;
+                animation: none;
+                width: 70px;
+                height: 70px;
+            }
+
+            .text-container {
+                max-width: 100%;
+                box-shadow: none;
+                padding: 0;
+            }
+
+            .img1,
+            .img2,
+            .img3,
+            .img4 {
+                position: static;
+                display: inline-block;
+                margin: 10px;
+            }
+
+            .actor-orbit {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                padding: 0;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <a class="back-home" href="index.html">&larr; Accueil</a>
+        <button class="burger" onclick="toggleMenu()">☰</button>
+        <nav class="flight-steps">
+            <a class="step active" href="decollage.html"><i>🛫</i> Décollage</a>
+            <a class="step" href="reperage.html"><i>🚁</i> Repérages</a>
+            <a class="step" href="survol-tactique.html"><i>🔎</i> Tactique</a>
+            <a class="step" href="podcast.html"><i>🎧</i> Transmission</a>
+            <a class="step" href="atterrissage.html"><i>⚖️</i> Atterrissage</a>
+        </nav>
+    </header>
+
+    <h1 class="main-title">UNE TECHNOLOGIE EN ALTITUDE, DES ENJEUX AU SOL</h1>
+
+    <section id="contexte" data-aos="fade-up">
+        <h2>Pourquoi des drones ?</h2>
+
+        <div class="horizontal">
+            <div style="flex: 1; min-width: 300px;">
+                <p class="intro">
+                    Dans un monde où les frontières dépassent les simples barrières physiques, les drones offrent une surveillance aérienne moderne avec une capacité d'observation inégalée, couvrant de vastes zones et réagissant rapidement aux
+                    <span class="tooltip">menaces potentielles<span class="tooltiptext">Intrusions illégales,
+                            contrebande, surveillance hostile, sabotage, tensions géopolitiques, ...</span>.
+                </p>
+                <p class="intro">
+                    Mais pourquoi recourir spécifiquement aux drones pour la surveillance des
+                    frontières ?
+                </p>
+                <p class="intro">
+                    Équipés de caméras HD et capteurs thermiques, ils détectent les activités suspectes et surveillent les mouvements de population, même en terrains difficiles d'accès. Cependant, leur déploiement soulève des questions juridiques cruciales, comme l'a rappelé le
+                    <span class="tooltip">Conseil d'État<span class="tooltiptext">Plus haute juridiction administrative
+                            en France dont la mission est de conseiller le gouvernement et de juger les litiges entre
+                            les citoyens et l'administration. Il veille notamment à ce que les décisions de
+                            l'administration respectent les droits fondamentaux et les principes de
+                            légalité.</span></span>
+                            français concernant le respect de la vie privée.
+                </p>
+                <p class="intro">
+                    Au travers de cette expérience, nous vous invitons à "embarquer" à bord d'un drone pour une mission de surveillance aux frontières. Vous découvrirez cette technologie, ses aspects techniques, juridiques, et les perspectives offertes par les différents acteurs du domaine. 
+                </p>
+            </div>
+
+            <div style="flex: 1; min-width: 250px; max-width: 400px; text-align: center;">
+                <img src="drone-model.jpg" alt="Drone militaire en vol"
+                    style="width: 100%; height: auto; border-radius: 8px;">
+                <figcaption>Drone de surveillance militaire</figcaption>
+            </div>
+        </div>
+
+
+        <br>
+
+        <div class="stats" data-aos="fade-up">
+            <div class="stat-block">
+                <h3>+14 000 km</h3>
+                <p>Frontières terrestres européennes à surveiller</p>
+            </div>
+            <div class="stat-block">
+                <h3>243</h3>
+                <p>Missions de drone annuelles</p>
+            </div>
+        </div>
+
+        <br>
+
+        <blockquote class="amnesty-quote" data-aos="fade-up">
+            "Les drones de surveillance sont très différents des caméras de surveillance fixes : ils sont extrêmement
+            intrusifs, ils sont mobiles, peuvent se déplacer discrètement dans le ciel, suivre une personne, filmer une
+            foule et même, incidemment, filmer l’intérieur d’un bâtiment par la fenêtre."
+            <footer>- Amnesty International</footer>
+        </blockquote>
+    </section>
+
+
+    <section class="actors-section" data-aos="fade-up">
+        <h2 class="section-title reduce">🌐 Qui surveille ? Qui est surveillé ? Qui conçoit ? Qui dénonce ?</h2>
+
+        <div class="actor-orbit">
+            <div class="imgs">
+                <div class="floating-img img1"><img src="frontex.png" alt="Frontex"></div>
+                <div class="floating-img img2"><img src="mig2.png" alt="Migrants"></div>
+                <div class="floating-img img3"><img src="airbus.jpeg" alt="Airbus"></div>
+                <div class="floating-img img4"><img src="amnesty.png" alt="ONG"></div>
+            </div>
+
+            <div class="central-text" data-aos="fade-up">
+                <h2>Des regards croisés sur un même ciel</h2>
+                <p class="justify">
+                    &nbsp;&nbsp;&nbsp;Policiers aux frontières, opérateurs de
+                    <span class="tooltip">Frontex<span class="tooltiptext">Agence Européenne en charge de la
+                            surveillance des frontières.<br>Voir présentation en page suivante.</span></span>,
+                    industriels de l’armement, start-up high-tech, ONG de défense des droits humains, réfugiés et
+                    migrants : tous
+                    gravitent autour de ces drones qui scrutent les frontières. Les uns conçoivent, d’autres pilotent,
+                    certains dénoncent.
+                    Ce sont des logiques de sécurité, d’innovation, d’humanité qui s’entrechoquent dans ce théâtre
+                    aérien.
+                    En explorant ces visages, on découvre que la surveillance par drone n’est pas qu’une question de
+                    technologie — c’est
+                    aussi une question de société.
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+
+    <section data-aos="fade-up">
+        <h2 class="section-title">🔍 Le saviez-vous ?</h2>
+
+        <div class="faq-container" style="max-width: 800px; margin: auto;">
+            <button class="faq-question">
+                <span class="faq-label">Qu'est-ce que le principe de non-refoulement ?</span>
+                <span class="arrow">▼</span>
+            </button>
+            <div class="faq-answer">
+                <p>Le non-refoulement interdit le "pushback", ou le fait de renvoyer une personne vers un pays où elle
+                    risque torture,
+                    persécutions ou traitements inhumains. C'est un principe figurant dans la Convention de Genève de
+                    1951.</p>
+            </div>
+
+            <button class="faq-question">
+                <span class="faq-label">Les drones peuvent-ils collecter des données personnelles ?</span>
+                <span class="arrow">▼</span>
+            </button>
+            <div class="faq-answer">
+                <p>Oui, et cela soulève des inquiétudes. S'ils filment des individus sans leur consentement, cela peut
+                    enfreindre le
+                    <span class="tooltip">RGPD<span class="tooltiptext">Le Règlement Général sur la Protection des
+                            Données est une réglementation européenne entrée en vigueur en 2018, visant à encadrer la
+                            collecte, le traitement et le stockage des données personnelles des individus au sein de
+                            l'Union européenne. ​</span></span>
+                    , notamment si les données sont
+                    <span class="tooltip">biométriques<span class="tooltiptext">ADN, empreintes digitales, contour de la
+                            main, visage, ... ​</span></span>
+                    .
+                </p>
+            </div>
+
+            <button class="faq-question">
+                <span class="faq-label">Les drones sont-ils utilisés pour secourir en mer ?</span>
+                <span class="arrow">▼</span>
+            </button>
+            <div class="faq-answer">
+                <p>Théoriquement oui, mais en pratique leur rôle est surtout de repérer. Leur usage soulève donc des
+                    débats sur la non-assistance aux personnes en détresse.</p>
+            </div>
+        </div>
+    </section>
+
+    <section data-aos="fade-up">
+        <h2 class="section-title">🕰️ Une frontière sous surveillance : la montée des drones</h2>
+
+        <div class="timeline-wrapper">
+            <div class="timeline-bar">
+                <button class="timeline-dot" data-index="0">1990</button>
+                <button class="timeline-dot" data-index="1">2000</button>
+                <button class="timeline-dot" data-index="2">2015</button>
+                <button class="timeline-dot" data-index="3">2018</button>
+                <button class="timeline-dot" data-index="4">2020</button>
+                <button class="timeline-dot" data-index="5">2021</button>
+                <button class="timeline-dot" data-index="6">2022-23</button>
+            </div>
+
+            <div id="timeline-content" class="timeline-content">
+                <!-- Le contenu de l’événement s'affiche ici -->
+            </div>
+        </div>
+    </section>
+
+
+
+
+    <!-- Boutons de navigation -->
+    <div class="nav-buttons">
+        <a href="index.html">← Accueil</a>
+        <a href="reperage.html">Voir les acteurs</a>
+    </div>
+
+    <footer>
+        <p>Projet étudiant – Cartographie des controverses – 2025</p>
+        <p><strong> Kossi Alain BILOBA,
+                Charles Junior Eithel ESSIMBI EMINI,
+                Lhuisse GUIEMA IBONDZI,
+                Lola LE CLEACH,
+                Lucas PERROT</strong></p>
+    </footer>
+</body>
+
+<script>
+    const events = [
+        "🛩️ <strong>Années 1990 :</strong> Premiers drones militaires développés.</br><img class='time-img' src='drone.jpeg'>",
+        "🌊 <strong>2000 :</strong> Tests de surveillance maritime par la marine italienne. </br><img class='time-img' src='ital.jpg'>",
+        "🚢 <strong>2015 :</strong> Intensification liée à la 'crise migratoire' en Méditerranée.</br><img class='time-img' src='bateau.jpeg'>",
+        "🧑‍⚖️ <strong>2018 :</strong> Premiers <span class='tooltip'>rapports d'ONG<span class='tooltiptext'>Amnesty International – Rapport annuel 2017/2018​</span></span> sur la surveillance déshumanisante.</br><img class='time-img' src='surv.jpg'>",
+        "🔍 <strong>2020 :</strong> Le <span class='tooltip'>Conseil de l'Europe<span class='tooltiptext'>Organisation internationale fondée en 1949, indépendante de l'Union européenne, qui œuvre à promouvoir les droits de l'homme, la démocratie et l'État de droit en Europe. ​</span></span> alerte sur les atteintes à la vie privée.</br><img class='time-img conseilpng' src='conseil.png'>",
+        "📜 <strong>2021 :</strong> Réglementation italienne <span class='tooltip'>renforcée<span class='tooltiptext'>En 2021, l'Italie a renforcé sa réglementation sur l'utilisation des drones de surveillance en milieu urbain, en alignement avec le règlement européen UE 2019/947. L'ENAC (Ente Nazionale Aviazione Civile) a mis en place des restrictions spécifiques pour encadrer ces opérations sensibles : autorisation préalable nécessaire, restriction d'altitude, interdiction de survol de certaines zones, ... ​</span></span>.</br><img class='time-img' src='loi.jpeg'>",
+        "⚖️ <strong>2022-2023 :</strong> Le <span class='tooltip'>Parlement Européen<span class='tooltiptext'>Institution législative de l'Union Européenne, représentant les citoyens et participant à l'élaboration des lois européennes.​</span></span> exige plus de transparence et de respect des droits fondamentaux.</br><img class='time-img' src='parl.jpg'>"
+    ];
+
+    const contentDiv = document.getElementById('timeline-content');
+    const dots = document.querySelectorAll('.timeline-dot');
+
+    function selectEvent(index) {
+        contentDiv.innerHTML = events[index];
+
+        dots.forEach(dot => dot.classList.remove('active'));
+        dots[index].classList.add('active');
+    }
+
+    dots.forEach(dot => {
+        dot.addEventListener('click', () => {
+            const index = parseInt(dot.getAttribute('data-index'));
+            selectEvent(index);
+        });
+    });
+
+    // Affiche le premier événement par défaut
+    selectEvent(0);
+</script>
+
+<script>
+    const questions = document.querySelectorAll('.faq-question');
+    questions.forEach(btn => {
+        btn.addEventListener('click', () => {
+            btn.classList.toggle('active');
+            const answer = btn.nextElementSibling;
+            const arrow = btn.querySelector('.arrow');
+
+            // Toggle display
+            if (answer.style.display === 'block') {
+                answer.style.display = 'none';
+                arrow.textContent = '▼';
+            } else {
+                answer.style.display = 'block';
+                arrow.textContent = '▲';
+            }
+        });
+    });
+
+    function toggleMenu() {
+        const menu = document.querySelector('.flight-steps');
+        menu.classList.toggle('show');
+    }
+
+</script>
+
+<!-- AOS JS -->
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+  AOS.init({
+    duration: 1000,
+    once: true
+  });
+</script>
+
+
+
+
+
+
+
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Survol Tactique – Missions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #00bcd4;
+            --bg: #0f1c2e;
+            --text: #f0f0f0;
+            --muted: #a0a0a0;
+            --card-bg: #19283f;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background: #1a1a1a;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .back-home {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .flight-steps {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            color: white;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+
+        .step.active {
+            opacity: 1;
+            font-weight: bold;
+        }
+
+        .step i {
+            font-size: 1.5rem;
+            margin-bottom: 0.3rem;
+        }
+
+
+        .section-title {
+            text-align: center;
+            padding: 3rem 1rem 1rem;
+            font-size: 2rem;
+            letter-spacing: 1px;
+            color: #1a1a1a;
+        }
+
+        .mission-selector {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 2rem 1rem;
+        }
+
+        .mission-btn {
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .mission-btn:hover,
+        .mission-btn.active {
+            background: #333;
+        }
+
+        .mission-content {
+            max-width: 900px;
+            margin: 2rem auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .mission-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        blockquote {
+            font-style: italic;
+            color: #555;
+            margin-top: 1.5rem;
+            border-left: 4px solid #1a1a1a;
+            padding-left: 1rem;
+        }
+
+        .nav-buttons {
+            text-align: center;
+            margin: 3rem auto;
+        }
+
+        .nav-buttons a {
+            margin: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--accent);
+            color: var(--bg);
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .nav-buttons a:hover {
+            background-color: #00acc1;
+        }
+
+        footer {
+            background: #1a1a1a;
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <a class="back-home" href="index.html">&larr; Accueil</a>
+        <nav class="flight-steps">
+            <a class="step" href="decollage.html"><i>🛫</i> Décollage</a>
+            <a class="step" href="reperage.html"><i>🚁</i> Repérages</a>
+            <a class="step active" href="survol-tactique.html"><i>🔎</i> Tactique</a>
+            <a class="step" href="podcast.html"><i>🎧</i> Transmission</a>
+            <a class="step" href="atterrissage2.html"><i>⚖️</i> Atterrissage</a>
+        </nav>
+    </header>
+
+    <h1 class="section-title">🎯 Opérations de terrain</h1>
+
+    <div class="mission-selector">
+        <button class="mission-btn active" data-mission="surveillance">Surveillance maritime par la Marina Militare italienne </button>
+        <button class="mission-btn" data-mission="2015">Intensification de l'utilisation des drones à partir de 2015</button>
+        <button class="mission-btn" data-mission="eurosur">Programme Eurosur</button>
+        <button class="mission-btn" data-mission="paf">Surveillance alpine par la Police Aux Frontières dans les Alpes</button>
+        <button class="mission-btn" data-mission="NonAssistance">Non assistance en mer aux embarcations en détresse</button>
+    </div>
+
+    <div id="surveillance" class="mission-content active">
+        <h3>Mission : Repérer les embarcations de migrants</h3>
+        <p><strong>Description :</strong> Face à l'augmentation des traversées de migrants en Mer Méditerranée, la Marina Militare italienne a expérimenté l'usage de drones pour la surveillance maritime à partir des années 2000. Ces derniers permettent de repérer les embarcations irrégulières loin des côtes et limiter les coûts humains et financiers des patrouilles classiques. </p>
+        <p><strong>Acteurs impliqués & rôles :</strong> </p>
+        <ul>
+            <li><strong> Frontex :</strong> Depuis sa création, l'organisme s'appuie sur les premiers tests italiens pour modéliser et étendre ce modèle de surveillance à l'échelle européenne. Frontex renforce les moyens déployés grâce à des financements.</li>
+            <li><strong>Police aux frontières italienne (P.A.F.) : </strong> Reçoit les données des drones militaire et agit sur le terrain via des interpellations, des refoulements aux points d'entrée, etc. </li>
+            <li><strong>ONG :</strong> Soulignent déjà l'utilisation des drones pour repérer et non secourir.  </li>
+        </ul>
+        <blockquote>“Le drone, c’est comme une patrouille silencieuse. Mais il ne remplacera jamais l’œil du flic dans
+            le col.” – Responsable PAF</blockquote>
+    </div>
+
+    <div id="2015" class="mission-content">
+        <h3> Mission : Répondre à l'augmentation soudaine des flux migratoires</h3>
+        <p><strong>Description :</strong>  En 2015, les flux migratoires augmentent significativement en Méditerranée centrale. Par conséquent, l'utilisation des drones s'intensifie pour surveiller et anticiper les arrivées. </p>
+        <p><strong>Acteurs impliqués & rôles :</strong> </p>
+        <ul>
+            <li><strong> Frontex :</strong> Renforce sa présence opérationnelle et initie le programme Eurosur.</li>
+            <li><strong>Police aux frontières italienne (P.A.F.) : </strong> Elle reçoit les coordonnées des embarcations et peuvent ainsi les intercepter.</li>
+            <li><strong>ONG :</strong> Selon elles, l'équilibre entre sécurité et droits humains est rompu car les drônes permettent une détection plus rapide mais n'améliorent pas le secours en mer. Les drones ne sont utiliser qu'à des fins répressives.</li>
+        </ul>
+        <blockquote>“On n’arrive plus à séparer l’aide humanitaire de la surveillance.” – ONG Méditerranée</blockquote>
+    </div>
+
+    <div id="eurosur" class="mission-content">
+        <h3> Mission : Déploiement du programme Eurosur (European Border Surveillance System) par Frontex </h3>
+        <p><strong>Description :</strong>  Surveiller les frontières extérieures de l'UE de manière coordonnées et en temps réel. Créer une base de données commune sur les flux migratoires pour coordonner des pushbacks.</p>
+        <p><strong>Acteurs impliqués & rôles :</strong> </p>
+        <ul>
+            <li><strong> Frontex :</strong> Fournit les équipements (drones, radars, satellites, ...) et coordonne la collecte des données. </li>
+            <li><strong> Les Etats membres de l'UE : </strong>  Utilisent les données pour renforcer les contrôles et déclencher des actions rapides. </li>
+            <li><strong>ONG :</strong> Alertent sur l'opacité des opérations et de le manque de transparence sur les données collectées. </li>
+        </ul>
+        <blockquote>“Ces tests interrogent les libertés publiques.” – Rapport CNIL 2024</blockquote>
+    </div>
+
+    <div id="paf" class="mission-content">
+        <h3> Mission : Repérer les passages clandestins dans les zones de montagne </h3>
+        <p><strong>Description :</strong> Dans les régions alpines, les drones sont utilisés pour survoler les cols de montagne, en particulier la nuit, afin de repérer les passages clandestins de migrants. Ces vols permettent à la PAF d’anticiper les trajectoires et d'intervenir rapidement. Les conditions climatiques rendent les traversées dangereuses, et les drones renforcent une logique de dissuasion plutôt que de protection.</p>
+        <p><strong>Acteurs impliqués & rôles :</strong> </p>
+        <ul>
+            <li><strong> Frontex :</strong> Soutient techniquement dans certaines régions.</li>
+            <li><strong> Police aux frontières italienne (P.A.F.) : </strong>  Opère les vols, intercepte les migrants dans les cols.</li>
+            <li><strong>ONG :</strong> Critiquent la pression exercée sur les migrants et dénoncent les conditions climatiques extrêmes qui mettent des vies en danger.</li>
+        </ul>
+        <blockquote>“Nous analysons les données en temps réel pour adapter nos réponses.” – Communiqué Frontex
+        </blockquote>
+    </div>
+
+    <div id="NonAssistance" class="mission-content">
+        <h3> Mission : Repérer les embarcations en détresse sans assistance directe</h3>
+        <p><strong>Description :</strong> En Méditerranée centrale, les drones sont déployés pour localiser les embarcations transportant des migrants mais ne déclenchent pas systématiquement les secours.     Dans de nombreux cas, les données sont utilisées pour empêcher les arrivées plutôt que pour sauver des vies. </p>
+        <p><strong>Acteurs impliqués & rôles :</strong> </p>
+        <ul>
+            <li><strong> Frontex :</strong> Supervise les vols, collecte les données, les transmet aux garde-côtes ou à des autorités partenaires.</li>
+            <li><strong> Police aux frontières (P.A.F.) : </strong> Peuvent être alertées, mais les interventions sont irrégulières, voire inexistantes.</li>
+            <li><strong>ONG :</strong> Dénoncent une politique de surveillance qui voit sans secourir. Accusent l’UE de privilégier le contrôle à la protection des vies humaines.</li>
+        </ul>
+        <blockquote>“Nous analysons les données en temps réel pour adapter nos réponses.” – Communiqué Frontex</blockquote>
+    </div>
+
+    <!-- Boutons de navigation -->
+    <div class="nav-buttons">
+        <a href="reperage.html">← Repérages</a>
+        <a href="podcast.html">Voir le Podcast</a>
+    </div>
+
+    <footer>
+        <p>Projet étudiant – Cartographie des controverses – 2025</p>
+        <p>Merci à toutes les personnes interrogées, à Frontex, la PAF, etc.</p>
+        <p><strong> Kossi Alain BILOBA,
+                Charles Junior Eithel ESSIMBI EMINI,
+                Lhuisse GUIEMA IBONDZI,
+                Lola LE CLEACH,
+                Lucas PERROT</strong></p>
+    </footer>
+
+    <script>
+        const buttons = document.querySelectorAll('.mission-btn');
+        const contents = document.querySelectorAll('.mission-content');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                // retirer les classes actives
+                buttons.forEach(btn => btn.classList.remove('active'));
+                contents.forEach(content => content.classList.remove('active'));
+
+                // activer la sélection
+                button.classList.add('active');
+                const missionId = button.getAttribute('data-mission');
+                document.getElementById(missionId).classList.add('active');
+            });
+        });
+    </script>
+</body>
+
+</html>

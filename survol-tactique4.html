@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Survol Tactique – Missions</title>
+  
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --clr-primary: #00bcd4;
+      --clr-dark: #0f1c2e;
+      --clr-dark-2: #19283f;
+      --clr-light: #f4f4f4;
+      --clr-text: #f0f0f0;
+      --clr-gray: #a0a0a0;
+      --radius: 0.5rem;
+      --transition: 0.3s;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--clr-light);
+      color: var(--clr-dark);
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    header {
+      background: var(--clr-dark);
+      color: var(--clr-text);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .back-home {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--clr-primary);
+      transition: color var(--transition);
+    }
+    .back-home:hover {
+      color: lighten(var(--clr-primary),10%);
+    }
+
+    .flight-steps {
+      display: flex;
+      gap: 1.5rem;
+    }
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 500;
+      font-size: 0.9rem;
+      opacity: 0.6;
+      transition: opacity var(--transition), color var(--transition);
+    }
+    .step.active, .step:hover {
+      opacity: 1;
+      color: var(--clr-primary);
+    }
+
+    main {
+      max-width: 1200px;
+      margin: auto;
+      padding: 2rem 1rem;
+    }
+
+    .title {
+      text-align: center;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.5rem;
+      color: var(--clr-dark);
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .title::after {
+      content: '';
+      width: 80px;
+      height: 4px;
+      background: var(--clr-primary);
+      display: block;
+      margin: 0.5rem auto;
+      border-radius: var(--radius);
+    }
+
+    .intro {
+      max-width: 900px;
+      margin: 1rem auto 3rem;
+      font-size: 1rem;
+      text-align: center;
+      color: var(--clr-dark-2);
+    }
+
+    /* Missions Tabs */
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .tab-btn {
+      background: var(--clr-dark);
+      color: var(--clr-text);
+      padding: 1.2rem;
+      border: none;
+      border-radius: var(--radius);
+      font-weight: 600;
+      cursor: pointer;
+      transition: background var(--transition);
+      text-align: center;
+      position: relative;
+    }
+    .tab-btn.active {
+      background: var(--clr-primary);
+      color: var(--clr-dark);
+    }
+    .tab-btn:not(.active):hover {
+      background: var(--clr-dark-2);
+    }
+
+    .tab-content {
+      display: none;
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      animation: fadeInUp 0.5s ease;
+    }
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .tab-content h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--clr-dark-2);
+    }
+    .tab-content p {
+      margin-bottom: 1rem;
+    }
+    .tab-content ul {
+      list-style: disc;
+      padding-left: 1.2rem;
+      margin-bottom: 1rem;
+    }
+    .tab-content blockquote {
+      position: relative;
+      margin: 1.5rem 0;
+      padding: 1rem 1.5rem;
+      background: #f7f7f7;
+      border-left: 4px solid var(--clr-primary);
+      font-style: italic;
+      color: var(--clr-gray);
+    }
+
+    /* Navigation Buttons */
+    .nav-buttons {
+      text-align: center;
+      margin: 3rem 0;
+    }
+    .nav-buttons a {
+      display: inline-block;
+      margin: 0 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--clr-primary);
+      color: var(--clr-dark);
+      border-radius: var(--radius);
+      font-weight: 600;
+      transition: background var(--transition);
+    }
+    .nav-buttons a:hover {
+      background: darken(var(--clr-primary),10%);
+    }
+
+    footer {
+      background: var(--clr-dark);
+      color: var(--clr-text);
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.9rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .title { font-size: 2rem; }
+      .intro { font-size: 0.95rem; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <a class="back-home" href="index.html"><i class="fas fa-arrow-left"></i> Accueil</a>
+    <nav class="flight-steps">
+      <a class="step" href="decollage.html"><i class="fas fa-plane-departure"></i> Décollage</a>
+      <a class="step" href="reperage.html"><i class="fas fa-helicopter"></i> Repérages</a>
+      <a class="step active" href="survol-tactique.html"><i class="fas fa-binoculars"></i> Tactique</a>
+      <a class="step" href="podcast.html"><i class="fas fa-podcast"></i> Transmission</a>
+      <a class="step" href="atterrissage2.html"><i class="fas fa-archive"></i> Atterrissage</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1 class="title">🎯 Opérations de terrain</h1>
+    <p class="intro">Le recours aux drones dans le contrôle migratoire européen s’est déployé progressivement, d’expérimentations navales à un système coordonné à l’échelle de l’Union Européenne.</p>
+
+    <div class="tabs" data-aos="fade-up">
+      <button class="tab-btn active" data-mission="surveillance">Surveillance maritime</button>
+      <button class="tab-btn" data-mission="eurosur">Programme Eurosur</button>
+      <button class="tab-btn" data-mission="paf">Surveillance alpine</button>
+    </div>
+
+    <div id="surveillance" class="tab-content active" data-aos="fade-up">
+      <h3>Repérer les embarcations de migrants</h3>
+      <p><strong>Description :</strong> À partir des années 2000, la Marina Militare italienne expérimente les drones pour repérer en mer Méditerranée les embarcations irrégulières, augmentant la portée des patrouilles et réduisant les risques humains.</p>
+      <ul>
+        <li><strong>Frontex :</strong> Élargit ces tests à l’échelle européenne grâce aux financements et aux moyens techniques.</li>
+        <li><strong>P.A.F. :</strong> Intervient au sol pour gérer interpellations et refoulements.</li>
+        <li><strong>ONG :</strong> Dénoncent la dissociation entre surveillance et secours en mer.</li>
+      </ul>
+      <blockquote>“Le drone, c’est une patrouille discrète, mais il remplace rarement l’œil humain.” – Responsable PAF</blockquote>
+    </div>
+
+    <div id="eurosur" class="tab-content" data-aos="fade-up">
+      <h3>Déploiement du programme Eurosur</h3>
+      <p><strong>Description :</strong> Après la crise de 2015, l’UE met en place Eurosur, orchestré par Frontex, pour coordonner la surveillance des frontières extérieures en temps réel via drones, radars et satellites.</p>
+      <ul>
+        <li><strong>États membres :</strong> Exploitent les données pour renforcer les contrôles aux points d’entrée.</li>
+        <li><strong>Frontex :</strong> Centralise et analyse les flux migratoires.</li>
+        <li><strong>ONG :</strong> Pointent l’opacité et les risques pour les libertés publiques.</li>
+      </ul>
+      <blockquote>“Ces dispositifs exigent une transparence totale pour préserver les droits fondamentaux.” – Rapport CNIL 2024</blockquote>
+    </div>
+
+    <div id="paf" class="tab-content" data-aos="fade-up">
+      <h3>Surveillance alpine</h3>
+      <p><strong>Description :</strong> Dans les Alpes, les drones sont déployés la nuit pour repérer les passages clandestins, aidant la PAF à anticiper les trajectoires malgré des conditions climatiques extrêmes.</p>
+      <ul>
+        <li><strong>Frontex :</strong> Apporte un soutien technique ciblé.</li>
+        <li><strong>P.A.F. :</strong> Opère et coordonne les interventions en montagne.</li>
+        <li><strong>ONG :</strong> Critiquent l’impact humanitaire et la logique de dissuasion.</li>
+      </ul>
+      <blockquote>“Nous analysons chaque donnée pour adapter nos tactiques sur le terrain.” – Communiqué Frontex</blockquote>
+    </div>
+
+    <div class="nav-buttons" data-aos="fade-up">
+      <a href="reperage.html">← Repérages</a>
+      <a href="podcast.html">Voir le Podcast</a>
+    </div>
+  </main>
+
+  <footer>
+    <p>Projet étudiant – Cartographie des controverses – 2025</p>
+    <p>Merci à toutes les personnes interrogées, à Frontex, la PAF, etc.</p>
+    <p><strong>Kossi Alain BILOBA, Charles Junior Eithel ESSIMBI EMINI, Lhuisse GUIEMA IBONDZI, Lola LE CLEACH, Lucas PERROT</strong></p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 800, once: true });
+
+    const tabs = document.querySelectorAll('.tab-btn');
+    const contents = document.querySelectorAll('.tab-content');
+    tabs.forEach(btn => btn.addEventListener('click', () => {
+      tabs.forEach(b => b.classList.remove('active'));
+      contents.forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.mission).classList.add('active');
+    }));
+  </script>
+</body>
+
+</html>

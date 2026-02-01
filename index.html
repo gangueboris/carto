@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONTROVERSE</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
+</head>
+
+
+<body>
+    <header>
+        <video autoplay loop muted playsinline>
+            <source src="Frontex aircraft fly 1000 mission.mp4" type="video/mp4">
+            Votre navigateur ne supporte pas la lecture de vidéos.
+        </video>
+        <div class="overlay"></div>
+        <div class="header-content">
+            <h1>LES FRONTIÈRES VUES D'EN-HAUT<br>L'Europe sous l'oeil des machines</h1>
+            <p class="subtitle">Une enquête au cœur des nouvelles technologies de contrôle migratoire.</p>
+            <a href="decollage.html" class="btn">Décollage immédiat</a>
+        </div>
+    </header>
+
+
+
+    <div class="info-button">?</div>
+
+
+
+    <footer class="footer">
+        <div class="footer-content">
+          <p class="footer-text">ISEN Yncréa Ouest - Brest - Cartographie des Controverses</p>
+          <p class="footer-subtext">Groupe A3 | Année scolaire 2024-2025</p>
+          <div class="footer-names">
+            <ul>
+              <li>Kossi Alain BILOBA</li>
+              <li>Charles Junior Eithel ESSIMBI EMINI</li>
+              <li>Lhuisse GUIEMA IBONDZI</li>
+              <li>Lola LE CLEACH</li>
+              <li>Lucas PERROT</li>
+            </ul>
+          </div>
+        </div>
+      </footer>
+      
+</body>
+
+<script>
+    function smoothScrollTo(targetSelector, duration = 1000) {
+        const target = document.querySelector(targetSelector);
+        if (!target) return;
+
+        const start = window.scrollY;
+        const end = target.getBoundingClientRect().top + start;
+        const distance = end - start;
+        const startTime = performance.now();
+
+        function scrollStep(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+
+            // Ease in-out (tu peux changer pour un autre easing si tu veux)
+            const ease = progress < 0.5
+                ? 2 * progress * progress
+                : -1 + (4 - 2 * progress) * progress;
+
+            window.scrollTo(0, start + distance * ease);
+
+            if (progress < 1) {
+                requestAnimationFrame(scrollStep);
+            }
+        }
+
+        requestAnimationFrame(scrollStep);
+    }
+
+    document.querySelector('a[href="#contexte"]').addEventListener('click', function (e) {
+        e.preventDefault();
+        smoothScrollTo('#contexte', 1200); // <- durée en ms, ici 1200 pour plus lent
+    });
+</script>
+
+<script>
+    const carrousel = document.querySelector('.carrousel');
+    const cartes = document.querySelectorAll('.carte-acteur');
+    const btnLeft = document.querySelector('.left-btn');
+    const btnRight = document.querySelector('.right-btn');
+    let index = 0;
+
+    function updateCarrousel() {
+        const carteWidth = cartes[0].offsetWidth + 20; // 20 = margin entre les cartes
+        const containerWidth = document.querySelector('.carrousel-container').offsetWidth;
+
+        // Calcul du décalage pour centrer la carte active
+        let offset = (carteWidth * index) - (containerWidth - carteWidth) / 2;
+        if(index==0){
+            btnLeft.style.display = "none";
+            offset = 0;
+        }
+        else{
+            btnLeft.style.display = "block";
+        }
+        if(index==cartes.length-1){
+            btnRight.style.display = "none";
+        }
+        else{
+            btnRight.style.display = "block";
+        }
+        carrousel.style.transform = `translateX(-${offset}px)`;
+    }
+
+    // Gérer la navigation gauche
+    btnLeft.addEventListener('click', () => {
+        console.log(index)
+        if (index > 0) {
+            index--;
+        } else {
+            // Lorsque l'on revient à l'acteur 1, on le centre
+            index = 0;
+        }
+        updateCarrousel();
+    });
+
+    // Gérer la navigation droite
+    btnRight.addEventListener('click', () => {
+        if (index < cartes.length - 1) {
+            index++;
+        }
+        updateCarrousel();
+    });
+
+    // Fonction initiale pour centrer la première carte au début
+    function initCarrousel() {
+        updateCarrousel();
+    }
+
+    // Recalculer la position du carrousel lors d'un redimensionnement
+    window.addEventListener('resize', updateCarrousel);
+
+    // Initialiser le carrousel
+    initCarrousel();
+
+
+
+</script>
+
+
+</html>
